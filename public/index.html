@@ -1,0 +1,42 @@
+<html>
+  <head>
+    
+  </head>
+  <body>
+  <h1>RUBOR</h1>
+    <form action="/process" enctype="multipart/form-data" method="post">
+      <p>
+        <label for="image">Imagem em disco</label>
+        <input type="file" name="image">
+      </p>
+      <p>
+        <label for="url">Imagem na web</label>
+        <input type="text" name="url">
+      </p>
+      <p>
+        <label for="size">Crop dimension (ex: 200x200)</label>
+        <input type="text" name="size" value="200x200">
+      </p>
+
+      <button>send</button>
+
+    </form>
+
+    <p>
+      original
+      <img src="/images/original.jpg" alt="original">
+    </p>
+
+    <p>
+      rubor
+      <img src="/images/smart_crop.jpg" alt="smart_crop">
+    </p>
+
+    <p>
+      crop comum
+      <img src="/images/center_crop.jpg" alt="center">
+    </p>
+
+
+  </body>
+</html>

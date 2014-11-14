@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+require "opencv"
+
+if ARGV.length < 2
+  puts "Usage: info image_name crop_size"
+  exit
+end
+
+source, crop_size = ARGV
+
+image_dir = File.expand_path('../../public/images', __FILE__)
+
+source_x, source_y = crop_size.downcase.split('x').collect(&:to_i)
+half_x = source_x / 2
+half_y = source_y / 2
+
+data = "/usr/share/opencv/haarcascades/haarcascade_profileface.xml"
+detector = OpenCV::CvHaarClassifierCascade::load(data)
+
+image = OpenCV::IplImage.load(File.join(image_dir, source))
+regions = detector.detect_objects(image)
+
+unless regions.empty?
+  region = regions.last
+  point_x = (half_x - region.center.x).to_i.abs
+  point_y = (half_y - region.center.y).to_i.abs
+
+  %x(convert #{File.join image_dir, source} -crop #{crop_size}+#{point_x}+#{point_y} #{File.join image_dir, 'rubor.jpg'})
+  %x(convert #{File.join image_dir, source} -gravity Center -crop #{crop_size}+0+0 +repage #{File.join image_dir, 'common.jpg'})
+end
+
+
+# haarcascade_eye.xml                   haarcascade_lowerbody.xml          haarcascade_mcs_righteye.xml
+# haarcascade_eye_tree_eyeglasses.xml   haarcascade_mcs_eyepair_big.xml    haarcascade_mcs_upperbody.xml
+# haarcascade_frontalface_alt.xml       haarcascade_mcs_eyepair_small.xml  haarcascade_profileface.xml
+# haarcascade_frontalface_alt2.xml      haarcascade_mcs_leftear.xml        haarcascade_righteye_2splits.xml
+# haarcascade_frontalface_alt_tree.xml  haarcascade_mcs_lefteye.xml        haarcascade_smile.xml
+# haarcascade_frontalface_default.xml   haarcascade_mcs_mouth.xml          haarcascade_upperbody.xml
+# haarcascade_fullbody.xml              haarcascade_mcs_nose.xml
+# haarcascade_lefteye_2splits.xml       haarcascade_mcs_rightear.xml
