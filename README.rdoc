@@ -1,0 +1,3 @@
+= Rubor
+
+Rubor is a proof of concept for image crop with face recognition.
