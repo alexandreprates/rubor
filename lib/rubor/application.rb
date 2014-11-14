@@ -22,12 +22,12 @@ module Rubor
       size = @request.params['size'].downcase.split('x').collect(&:to_i)
 
       recognizer = Rubor::FaceRecognizer.new(ORIGINAL)
+      unless recognizer.matches.empty? 
+        crop_image 'smart_crop.jpg', region: calc_smart_crop(size, recognizer.best_match)
+        crop_image 'center_crop.jpg', region: calc_center_crop(size), gravity: 'Center'
 
-      crop_image 'smart_crop.jpg', region: calc_smart_crop(size, recognizer.matches.first)
-
-      crop_image 'center_crop.jpg', region: calc_center_crop(size), gravity: 'Center'
-
-      recognizer.mark(ORIGINAL)
+        recognizer.mark(ORIGINAL)
+      end
 
       [301, {"Content-Type" => "text/html", "Location" => '/'}, [""]]
     end

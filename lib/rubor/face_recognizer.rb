@@ -1,19 +1,21 @@
 module Rubor
-  # haarcascade_eye.xml                   haarcascade_lowerbody.xml          haarcascade_mcs_righteye.xml
-  # haarcascade_eye_tree_eyeglasses.xml   haarcascade_mcs_eyepair_big.xml    haarcascade_mcs_upperbody.xml
-  # haarcascade_frontalface_alt.xml       haarcascade_mcs_eyepair_small.xml  haarcascade_profileface.xml
-  # haarcascade_frontalface_alt2.xml      haarcascade_mcs_leftear.xml        haarcascade_righteye_2splits.xml
-  # haarcascade_frontalface_alt_tree.xml  haarcascade_mcs_lefteye.xml        haarcascade_smile.xml
-  # haarcascade_frontalface_default.xml   haarcascade_mcs_mouth.xml          haarcascade_upperbody.xml
-  # haarcascade_fullbody.xml              haarcascade_mcs_nose.xml
-  # haarcascade_lefteye_2splits.xml       haarcascade_mcs_rightear.xml
   class FaceRecognizer
 
     module Recognizer
       module_function
 
+# haarcascade_eye_tree_eyeglasses.xml   haarcascade_lowerbody.xml          haarcascade_mcs_righteye.xml
+# haarcascade_eye.xml                   haarcascade_mcs_eyepair_big.xml    haarcascade_mcs_upperbody.xml
+# haarcascade_frontalface_alt2.xml      haarcascade_mcs_eyepair_small.xml  haarcascade_profileface.xml
+# haarcascade_frontalface_alt_tree.xml  haarcascade_mcs_leftear.xml        haarcascade_righteye_2splits.xml
+# haarcascade_frontalface_alt.xml       haarcascade_mcs_lefteye.xml        haarcascade_smile.xml
+# haarcascade_frontalface_default.xml   haarcascade_mcs_mouth.xml          haarcascade_upperbody.xml
+# haarcascade_fullbody.xml              haarcascade_mcs_nose.xml
+# haarcascade_lefteye_2splits.xml       haarcascade_mcs_rightear.xml
+
+
       def frontal
-        @frontal ||= OpenCV::CvHaarClassifierCascade::load('/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml')
+        @frontal ||= OpenCV::CvHaarClassifierCascade::load('/usr/share/opencv/haarcascades/haarcascade_frontalface_alt2.xml')
       end
 
       def perfil
@@ -37,6 +39,10 @@ module Rubor
       matches.collect { |region| "Face found at: #{region.top_left.x}x#{region.top_left.x} - (#{region.width}, #{region.height})" }
     end
 
+    def best_match
+      @best_match ||= matches.sort { |a,b| (a.width + a.height) <=> (b.width + b.height) }.last
+    end
+
     def mark(filename)
       Recognizer.frontal.detect_objects(@image).each do |region|
         @image.rectangle! region.top_left, region.bottom_right, :color => OpenCV::CvColor::Green
@@ -54,8 +60,8 @@ module Rubor
     def track_faces
       [].tap do |result|
         time = Benchmark.measure do
-          result << Recognizer.perfil.detect_objects(@image).to_a
           result << Recognizer.frontal.detect_objects(@image).to_a
+          result << Recognizer.perfil.detect_objects(@image).to_a
         end
         result.flatten!
         puts "Track completed in #{time}"

@@ -7,4 +7,4 @@ gem 'ruby-opencv'
 gem 'rack'
 gem 'mini_magick'
 
-gem 'debugger', group: :development
+#gem 'debugger', group: :development
