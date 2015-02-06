@@ -6,5 +6,9 @@ source 'https://rubygems.org'
 gem 'ruby-opencv'
 gem 'rack'
 gem 'mini_magick'
+gem 'unicorn'
 
-#gem 'debugger', group: :development
+group :development do
+  gem 'pry'
+  gem 'pry-meta'
+end

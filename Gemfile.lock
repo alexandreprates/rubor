@@ -1,16 +1,50 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print (1.6.1)
+    byebug (3.5.1)
+      columnize (~> 0.8)
+      debugger-linecache (~> 1.2)
+      slop (~> 3.6)
+    coderay (1.1.0)
+    columnize (0.9.0)
+    debugger-linecache (1.2.0)
+    kgio (2.9.3)
+    method_source (0.8.2)
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.0.1)
+      byebug (~> 3.4)
+      pry (~> 0.10)
+    pry-meta (0.0.10)
+      awesome_print
+      pry
+      pry-byebug
+      pry-remote
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     rack (1.5.2)
+    raindrops (0.13.0)
     ruby-opencv (0.0.13)
+    slop (3.6.0)
     subexec (0.2.3)
+    unicorn (4.8.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   mini_magick
+  pry
+  pry-meta
   rack
   ruby-opencv
+  unicorn
