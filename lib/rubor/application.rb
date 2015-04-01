@@ -22,7 +22,7 @@ module Rubor
       size = @request.params['size'].downcase.split('x').collect(&:to_i)
 
       recognizer = Rubor::FaceRecognizer.new(ORIGINAL)
-      unless recognizer.matches.empty? 
+      unless recognizer.matches.empty?
         crop_image 'smart_crop.jpg', region: calc_smart_crop(size, recognizer.best_match)
         crop_image 'center_crop.jpg', region: calc_center_crop(size), gravity: 'Center'
 
@@ -60,7 +60,7 @@ module Rubor
       image.combine_options do |c|
         image.gravity options[:gravity] || 'SouthWest'
         image.crop options[:region]
-      end  
+      end
       image.write File.join(IMAGE_DIR, name)
     end
 
